@@ -6,6 +6,7 @@ import configparser
 import binascii
 import re
 import sys
+import time
 
 from PyQt5.QtGui import QTextCursor
 from PyQt5.QtSerialPort import QSerialPort, QSerialPortInfo
@@ -71,6 +72,25 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow,QtWidgets.QDialog):
             self.set_result(False)
             return
         self.set_result(True)
+        print('write sn')
+        sn=snmac[:15]
+        print('sn='+sn)
+        time.sleep(3)
+        print('write mac')
+        mac=snmac[26:28]+snmac[24:26]+snmac[22:24]+snmac[20:22]+snmac[18:20]+snmac[16:18]
+
+        print('mac='+mac)
+
+
+    def write_sn(self,sn):
+        value='0aff'+sn
+        self.send_data(value)
+
+    def write_mac(self,mac):
+        pass
+
+    def read_sensor(self):
+        pass
 
     def on_receiveData(self):
         try:
@@ -79,12 +99,15 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow,QtWidgets.QDialog):
         except:
             QtWidgets.QMessageBox.critical(self, '严重错误', '串口接收数据错误')
         if len(receivedData) > 0:
-            #data = binascii.b2a_hex(receivedData).decode('ascii')
-            #pattern = re.compile('.{2,2}')
-            #hexStr = ' '.join(pattern.findall(data)) + ' '
-            #self.tv_log.insertPlainText(hexStr.upper())
             self.tv_log.insertPlainText(receivedData.decode('ascii'))
             self.tv_log.moveCursor(QTextCursor.End)
+            self.parse_cmd(receivedData)
+
+    def parse_cmd(self,cmd):
+        if cmd.startswith('AT'):
+            print(cmd)
+        elif cmd.startswith('0aff01'):
+            print(cmd)
 
     def openSerial(self,com_id):
 
