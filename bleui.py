@@ -135,6 +135,7 @@ class Ui_MainWindow(object):
         self.label_6.setText(_translate("MainWindow", "MAC"))
 
 
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     mainWindow = QMainWindow()
