@@ -398,6 +398,16 @@ p, li { white-space: pre-wrap; }
      <string>PASS</string>
     </property>
    </widget>
+   <widget class="QTextBrowser" name="conn_info">
+    <property name="geometry">
+     <rect>
+      <x>810</x>
+      <y>90</y>
+      <width>221</width>
+      <height>41</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

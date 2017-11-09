@@ -4,15 +4,12 @@
 # @Author  : wzb<wangzhibin_x@foxmail.com>
 
 
-import time
-from threading import Timer
-
-
-def print_time(enter_time):
-    print("now is", time.time(), "enter_the_box_time is", enter_time)
-
-
-print(time.time())
-Timer(5, print_time, (time.time(),)).start()
-Timer(10, print_time, (time.time(),)).start()
-print(time.time())
+import  binascii
+sn='QD011738A002445'
+cmd='0bff01514430313137333841303032343435'
+print(type(cmd))
+print(cmd[6:36])
+if cmd.startswith('0bff') and len(cmd) == 36:
+    re_sn = cmd[6:36]
+    if re_sn == bytes.decode((binascii.b2a_hex(sn.encode()))):
+        print(123)
