@@ -34,6 +34,7 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow,QtWidgets.QDialog):
         self.tv_log.setFont(QtGui.QFont("Roman times",14))
         self.conn_info.setFont(QtGui.QFont("Roman times", 14))
         self.et_snmac.setFocus()
+        self.btn_next.setFont(QtGui.QFont("Roman times", 20))
         self.et_snmac.setFont(QtGui.QFont("Roman times", 20))
         self.et_snmac.textChanged.connect(self.snmac_change)
         self.tv_last_snamac.setFont(QtGui.QFont("Roman times",20))
@@ -209,6 +210,7 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow,QtWidgets.QDialog):
                 print('ble disconnected')
                 self.con_state = False
                 self.conn_info.setText('未连接')
+                self.reset_all_result()
 
             print('re_mode:'+self.rw_flag)
 
@@ -240,6 +242,7 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow,QtWidgets.QDialog):
                 device_rssi='-60'
                 device_name=''
                 s=cmd.split(',')
+                print(s)
                 if len(s)>=3:
                     device_rssi=s[1]
                     device_name=s[2]
