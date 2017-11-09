@@ -4,33 +4,15 @@
 # @Author  : wzb<wangzhibin_x@foxmail.com>
 
 
-import  sys
-from PyQt5.QtWidgets import QWidget,QCheckBox,QApplication
-from PyQt5.QtCore import Qt
-
-class Example(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.initUI()
-
-    def initUI(self):
-        cb=QCheckBox('show title',self)
-        cb.move(50,50)
-        cb.toggle()
-        cb.stateChanged.connect(self.changeTitle)
-
-        self.setGeometry(300,300,500,450)
-        self.setWindowTitle('qcheckbox')
-        self.show()
-
-    def changeTitle(self,state):
-        if state == Qt.Checked:
-            self.setWindowTitle('true')
-        else :
-            self.setWindowTitle('false')
+import time
+from threading import Timer
 
 
-if __name__ == '__main__':
-    app=QApplication(sys.argv)
-    ex=Example()
-    sys.exit(app.exec_())
+def print_time(enter_time):
+    print("now is", time.time(), "enter_the_box_time is", enter_time)
+
+
+print(time.time())
+Timer(5, print_time, (time.time(),)).start()
+Timer(10, print_time, (time.time(),)).start()
+print(time.time())

@@ -68,7 +68,7 @@
      <rect>
       <x>460</x>
       <y>10</y>
-      <width>111</width>
+      <width>171</width>
       <height>41</height>
      </rect>
     </property>
@@ -76,7 +76,7 @@
    <widget class="QCheckBox" name="cb_devname">
     <property name="geometry">
      <rect>
-      <x>590</x>
+      <x>650</x>
       <y>20</y>
       <width>91</width>
       <height>21</height>
@@ -89,10 +89,10 @@
    <widget class="QPushButton" name="btn_conn_state">
     <property name="geometry">
      <rect>
-      <x>810</x>
+      <x>890</x>
       <y>20</y>
       <width>81</width>
-      <height>31</height>
+      <height>51</height>
      </rect>
     </property>
     <property name="text">
@@ -130,7 +130,7 @@
      <rect>
       <x>20</x>
       <y>160</y>
-      <width>561</width>
+      <width>641</width>
       <height>341</height>
      </rect>
     </property>
@@ -148,7 +148,7 @@
      <string notr="true">background-color: rgb(255, 0, 0);</string>
     </property>
     <property name="text">
-     <string>OK</string>
+     <string>fail</string>
     </property>
    </widget>
    <widget class="QPushButton" name="btn_gyr">
@@ -164,7 +164,7 @@
      <string notr="true">background-color: rgb(255, 0, 0);</string>
     </property>
     <property name="text">
-     <string>OK</string>
+     <string>fail</string>
     </property>
    </widget>
    <widget class="QPushButton" name="btn_cps">
@@ -180,7 +180,7 @@
      <string notr="true">background-color: rgb(255, 0, 0);</string>
     </property>
     <property name="text">
-     <string>OK</string>
+     <string>fail</string>
     </property>
    </widget>
    <widget class="QPushButton" name="btn_sn">
@@ -196,7 +196,7 @@
      <string notr="true">background-color: rgb(255, 0, 0);</string>
     </property>
     <property name="text">
-     <string>OK</string>
+     <string>fail</string>
     </property>
    </widget>
    <widget class="QPushButton" name="btn_mac">
@@ -212,7 +212,7 @@
      <string notr="true">background-color: rgb(255, 0, 0);</string>
     </property>
     <property name="text">
-     <string>OK</string>
+     <string>fail</string>
     </property>
    </widget>
    <widget class="QTextEdit" name="et_snmac">
@@ -220,7 +220,7 @@
      <rect>
       <x>90</x>
       <y>610</y>
-      <width>491</width>
+      <width>571</width>
       <height>51</height>
      </rect>
     </property>
@@ -230,7 +230,7 @@
      <rect>
       <x>20</x>
       <y>10</y>
-      <width>91</width>
+      <width>101</width>
       <height>21</height>
      </rect>
     </property>
@@ -325,7 +325,7 @@ p, li { white-space: pre-wrap; }
      <rect>
       <x>90</x>
       <y>540</y>
-      <width>491</width>
+      <width>571</width>
       <height>41</height>
      </rect>
     </property>
@@ -340,7 +340,7 @@ p, li { white-space: pre-wrap; }
      </rect>
     </property>
     <property name="text">
-     <string>上次:</string>
+     <string>写入:</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_8">
