@@ -237,9 +237,12 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow,QtWidgets.QDialog):
         if self.rw_flag == 'SCAN':
             if ',' in cmd:
                 device_id=cmd[:1]
+                device_rssi='-60'
+                device_name=''
                 s=cmd.split(',')
-                device_rssi=s[1]
-                device_name=s[2]
+                if len(s)>=3:
+                    device_rssi=s[1]
+                    device_name=s[2]
                 #for test
                 #self.ble_reconnect()
                 #return
