@@ -36,6 +36,8 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow,QtWidgets.QDialog):
         self.et_snmac.setFocus()
         self.et_snmac.setFont(QtGui.QFont("Roman times", 20))
         self.et_snmac.setFont(QtGui.QFont("Roman times", 20))
+        self.tv_systime.setFont(QtGui.QFont("Roman times", 16))
+        self.btn_next.setFont(QtGui.QFont("宋体", 20))
         self.et_snmac.textChanged.connect(self.snmac_change)
         self.tv_last_snamac.setFont(QtGui.QFont("Roman times",20))
         self.init_com()
@@ -45,13 +47,37 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow,QtWidgets.QDialog):
         self.con_state_counter=0
         self.con_state=False
         self.con_state_timer.start(200)
+        self.init_ui()
+        self.init_res()
 
+    def init_res(self):
+        pass
+
+    def refresh_systime(self):
+        systime=time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
+        self.tv_systime.setText(systime)
+
+    def refresh_total_num(self):
+        print('refresh_total_num')
+        self.ln_total_num.display(self.write_ok_total_num)
+        self.config.set('info', 'totalnum', str(self.write_ok_total_num))
+        self.config.write(open('v.cfg', 'w'))
+
+    def init_ui(self):
+        self.btn_reset_total_num.clicked.connect(self.btn_reset_total_num_click)
 
     def init_com(self):
         self.com=QSerialPort()
         self.com.readyRead.connect(self.on_receiveData)
 
+    def btn_reset_total_num_click(self):
+        self.write_ok_total_num=0
+        self.config.set('info', 'totalnum', str(self.write_ok_total_num))
+        self.config.write(open('v.cfg', 'w'))
+        self.ln_total_num.display(self.write_ok_total_num)
+
     def update_con_state(self):
+        self.refresh_systime()
         if  self.con_state_counter <=2:
             self.con_state_counter+=1
             if self.con_state == False:
@@ -67,6 +93,10 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow,QtWidgets.QDialog):
         if result == True:
             self.btn_result.setText('PASS')
             self.btn_result.setStyleSheet('background-color:green')
+            print(self.write_ok_total_num)
+            print(type(self.write_ok_total_num))
+            self.write_ok_total_num+=1
+            self.refresh_total_num()
         else:
             self.btn_result.setText('FAIL')
             self.btn_result.setStyleSheet('background-color:red')
@@ -92,6 +122,7 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow,QtWidgets.QDialog):
         self.mac_result=False
         self.write_sn_state=False
         self.write_mac_state=False
+        self.et_snmac.setEnabled(False)
 
     def set_acc_result(self,r):
         if r == True:
@@ -292,6 +323,7 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow,QtWidgets.QDialog):
                 self.tv_log.insertPlainText('stop sensor\n')
                 self.tv_log.moveCursor(QTextCursor.End)
                 self.write_snmac_flag=True
+                self.et_snmac.setEnabled(True)
                 self.et_snmac.clear()
                 self.et_snmac.setFocus(True)
                 return
@@ -402,6 +434,11 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow,QtWidgets.QDialog):
         devname = self.config.get('info', 'devname')
         self.et_devname.setText(devname)
         self.et_devname.setFont(QtGui.QFont("Roman times", 12))
+
+        self.write_ok_total_num=self.config.getint('info','totalnum')
+        self.ln_total_num.setDecMode()
+        self.ln_total_num.setDigitCount(10)
+        self.ln_total_num.display(self.write_ok_total_num)
 
     def btn_disconnect_click(self):
 

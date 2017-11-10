@@ -408,6 +408,39 @@ p, li { white-space: pre-wrap; }
      </rect>
     </property>
    </widget>
+   <widget class="QLCDNumber" name="ln_total_num">
+    <property name="geometry">
+     <rect>
+      <x>830</x>
+      <y>620</y>
+      <width>161</width>
+      <height>41</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_reset_total_num">
+    <property name="geometry">
+     <rect>
+      <x>1010</x>
+      <y>622</y>
+      <width>75</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>重置</string>
+    </property>
+   </widget>
+   <widget class="QTextBrowser" name="tv_systime">
+    <property name="geometry">
+     <rect>
+      <x>830</x>
+      <y>690</y>
+      <width>251</width>
+      <height>51</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
