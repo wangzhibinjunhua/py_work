@@ -21,7 +21,7 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow,QtWidgets.QDialog):
     def __init__(self,parent=None):
         super(MainWindow,self).__init__(parent)
         self.setupUi(self)
-        self.setWindowTitle('蓝牙测试工具V1.1_20171110')
+        self.setWindowTitle('蓝牙测试工具V2.0')
         self.init_config()
 
         self.btn_com.clicked.connect(self.btn_com_click)
