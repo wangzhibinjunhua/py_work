@@ -21,7 +21,7 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow,QtWidgets.QDialog):
     def __init__(self,parent=None):
         super(MainWindow,self).__init__(parent)
         self.setupUi(self)
-        self.setWindowTitle('蓝牙测试工具V1.0_20171109')
+        self.setWindowTitle('蓝牙测试工具V1.1_20171110')
         self.init_config()
 
         self.btn_com.clicked.connect(self.btn_com_click)
@@ -34,7 +34,7 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow,QtWidgets.QDialog):
         self.tv_log.setFont(QtGui.QFont("Roman times",14))
         self.conn_info.setFont(QtGui.QFont("Roman times", 14))
         self.et_snmac.setFocus()
-        self.btn_next.setFont(QtGui.QFont("Roman times", 20))
+        self.et_snmac.setFont(QtGui.QFont("Roman times", 20))
         self.et_snmac.setFont(QtGui.QFont("Roman times", 20))
         self.et_snmac.textChanged.connect(self.snmac_change)
         self.tv_last_snamac.setFont(QtGui.QFont("Roman times",20))
@@ -343,13 +343,9 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow,QtWidgets.QDialog):
             self.tv_log.insertPlainText('第1次读取sensor:' + cmd+'\n')
             self.tv_log.insertPlainText('sleep 3s \n')
             self.tv_log.moveCursor(QTextCursor.End)
-            print('第一次时间:')
-            print(time.time())
             time.sleep(3)
             self.read_sensor()
         elif self.read_sensor_num==2:
-            print('第二次时间:')
-            print(time.time())
             self.tv_log.insertPlainText('第2次读取sensor:' + cmd+'\n')
             self.tv_log.moveCursor(QTextCursor.End)
             self.stop_sensor()
@@ -366,12 +362,6 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow,QtWidgets.QDialog):
             return -1
         self.com.setBaudRate(115200)
         self.et_snmac.setFocus()
-        ##for test
-        # self.read_sensor()
-        # Timer(2, self.read_sensor, ()).start()
-        # Timer(3, self.set_acc_result, (True,)).start()
-        # Timer(3.5, self.set_gyr_result, (True,)).start()
-        # Timer(4, self.set_cps_result, (True,)).start()
         return 0
 
     def send_data(self,data):
@@ -426,29 +416,24 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow,QtWidgets.QDialog):
     def cb_rssi_state(self,state):
         self.et_snmac.setFocus()
         if state == QtCore.Qt.Checked:
-            print('rssi true')
             self.et_rssi.setEnabled(False)
             rssi=self.et_rssi.toPlainText()
             self.config.set('info', 'rssi', rssi)
             self.config.write(open('v.cfg', 'w'))
         else:
-            print('rssi false')
             self.et_rssi.setEnabled(True)
 
     def cb_devname_state(self,state):
         self.et_snmac.setFocus()
         if state == QtCore.Qt.Checked:
-            print('devname true')
             self.et_devname.setEnabled(False)
             devname=self.et_devname.toPlainText()
             self.config.set('info', 'devname', devname)
             self.config.write(open('v.cfg', 'w'))
         else:
-            print('devname false')
             self.et_devname.setEnabled(True)
 
     def btn_com_click(self):
-        print('btn com click')
         com=self.et_com.toPlainText()
         if self.openSerial(com)!= -1:
             self.et_com.setEnabled(False)
