@@ -5,6 +5,6 @@
 
 import configparser
 import  binascii
-config = configparser.ConfigParser()
-config.set('info', 'totalnum', 1)
-config.write(open('v.cfg', 'w'))
+a='-50' \
+  ''
+print(int(a))

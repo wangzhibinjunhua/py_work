@@ -14,6 +14,7 @@ from PyQt5.QtSerialPort import QSerialPort, QSerialPortInfo
 from PyQt5 import QtCore,QtGui,QtWidgets
 from gevent.corecext import SIGNAL
 from threading import Timer
+import logging
 
 from ui_mainwindow import Ui_MainWindow
 class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow,QtWidgets.QDialog):
@@ -21,7 +22,12 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow,QtWidgets.QDialog):
     def __init__(self,parent=None):
         super(MainWindow,self).__init__(parent)
         self.setupUi(self)
-        self.setWindowTitle('蓝牙测试工具V2.0')
+        self.setWindowTitle('蓝牙测试工具V2.1')
+        logging.basicConfig(level=logging.DEBUG,
+                            format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
+                            datefmt='%a, %d %b %Y %H:%M:%S',
+                            filename='test.log',
+                            filemode='w')
         self.init_config()
 
         self.btn_com.clicked.connect(self.btn_com_click)
@@ -49,6 +55,7 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow,QtWidgets.QDialog):
         self.con_state_timer.start(200)
         self.init_ui()
         self.init_res()
+
 
     def init_res(self):
         pass
@@ -93,8 +100,6 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow,QtWidgets.QDialog):
         if result == True:
             self.btn_result.setText('PASS')
             self.btn_result.setStyleSheet('background-color:green')
-            print(self.write_ok_total_num)
-            print(type(self.write_ok_total_num))
             self.write_ok_total_num+=1
             self.refresh_total_num()
         else:
@@ -241,24 +246,24 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow,QtWidgets.QDialog):
                 print('ble disconnected')
                 self.con_state = False
                 self.conn_info.setText('未连接')
-                self.reset_all_result()
+                #self.reset_all_result()
 
             print('re_mode:'+self.rw_flag)
 
             if self.rw_flag == 'HEXMODE':
-                #data = binascii.b2a_hex(receivedData).decode('ascii')
                 data = binascii.b2a_hex(receivedData).decode('ascii')
-                print('data='+data)
-                print(type(data))
-                #pattern = re.compile('.{2,2}')
-                #hexStr = ' '.join(pattern.findall(data)) + ' '
-                #print('2222 hexstr='+hexStr+'len='+len(hexStr))
                 self.tv_log.insertPlainText('receive:' + data+'\n')
                 self.tv_log.moveCursor(QTextCursor.End)
-                self.parse_cmd(data)
+                try:
+                    self.parse_cmd(data)
+                except Exception as e:
+                    logging.exception(e)
 
             else:
-                self.parse_cmd(str_receivedData)
+                try:
+                    self.parse_cmd(str_receivedData)
+                except Exception as e:
+                    logging.exception(e)
                 self.tv_log.insertPlainText('receive:'+str_receivedData+'\n')
                 self.tv_log.moveCursor(QTextCursor.End)
 
@@ -273,7 +278,7 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow,QtWidgets.QDialog):
                 device_rssi='-60'
                 device_name=''
                 s=cmd.split(',')
-                print(s)
+                #print(s)
                 if len(s)>=3:
                     device_rssi=s[1]
                     device_name=s[2]
@@ -283,13 +288,13 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow,QtWidgets.QDialog):
                 ###
                 if self.cb_rssi.isChecked():
                     if int(device_rssi)<int(self.et_rssi.toPlainText()):
-                        print('rssi:'+device_rssi+'/'+self.et_rssi.toPlainText())
+                        #print('rssi:'+device_rssi+'/'+self.et_rssi.toPlainText())
                         return
                 if self.cb_devname.isChecked():
                     name=self.et_devname.toPlainText()
                     if  name in device_name== False:
 
-                        print('name:'+device_name+'/'+self.et_devname.toPlainText())
+                        #print('name:'+device_name+'/'+self.et_devname.toPlainText())
                         return
                 self.ble_connect(device_id)
         elif self.rw_flag == 'CONN':
