@@ -5,6 +5,3 @@
 
 import configparser
 import  binascii
-a='-50' \
-  ''
-print(int(a))

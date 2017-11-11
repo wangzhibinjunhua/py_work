@@ -22,7 +22,7 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow,QtWidgets.QDialog):
     def __init__(self,parent=None):
         super(MainWindow,self).__init__(parent)
         self.setupUi(self)
-        self.setWindowTitle('蓝牙测试工具V2.1')
+        self.setWindowTitle('蓝牙测试工具V2.2')
         logging.basicConfig(level=logging.DEBUG,
                             format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
                             datefmt='%a, %d %b %Y %H:%M:%S',
@@ -273,7 +273,8 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow,QtWidgets.QDialog):
 
         print('parse_cmd: mode='+self.rw_flag)
         if self.rw_flag == 'SCAN':
-            if ',' in cmd:
+            #if ',' in cmd:
+            if cmd.count(',')>=2:
                 device_id=cmd[:1]
                 device_rssi='-60'
                 device_name=''
@@ -297,6 +298,10 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow,QtWidgets.QDialog):
                         #print('name:'+device_name+'/'+self.et_devname.toPlainText())
                         return
                 self.ble_connect(device_id)
+                return
+            if 'Devices Found' in cmd:
+                self.ble_scan()
+
         elif self.rw_flag == 'CONN':
             if 'OK+CONN' in cmd:
                 self.conn_info.setText('已连接蓝牙设备')
@@ -452,7 +457,9 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow,QtWidgets.QDialog):
     def btn_next_click(self):
         self.et_snmac.setFocus()
         self.reset_all_result()
-
+        self.ble_disconnect()
+        self.com.flush()
+        time.sleep(1)
         self.ble_scan()
 
     def cb_rssi_state(self,state):
@@ -504,6 +511,11 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow,QtWidgets.QDialog):
     def ble_disconnect(self):
         self.rw_flag= 'DISCON'
         _cmd='AT+DISCON'
+        self.send_data(_cmd)
+
+    def ble_send_end(self):
+        self.rw_flag='SENDEND'
+        _cmd="\r\n"
         self.send_data(_cmd)
 
     def ble_set_tx_uuid(self):
