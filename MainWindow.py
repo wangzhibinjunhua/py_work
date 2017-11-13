@@ -9,7 +9,8 @@ import re
 import sys
 import time
 
-from PyQt5.QtGui import QTextCursor
+from PyQt5.QtCore import QRegExp
+from PyQt5.QtGui import QTextCursor, QRegExpValidator
 from PyQt5.QtSerialPort import QSerialPort, QSerialPortInfo
 from PyQt5 import QtCore,QtGui,QtWidgets
 from gevent.corecext import SIGNAL
@@ -45,6 +46,9 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow,QtWidgets.QDialog):
         self.tv_systime.setFont(QtGui.QFont("Roman times", 16))
         self.btn_next.setFont(QtGui.QFont("宋体", 20))
         self.et_snmac.textChanged.connect(self.snmac_change)
+        regx = QRegExp("^Q{1}D{1}[0-9A-Z]{13}/{1}[0-9A-F]{12}$")
+        validator = QRegExpValidator(regx, self.et_snmac)
+        self.et_snmac.setValidator(validator)
         self.tv_last_snamac.setFont(QtGui.QFont("Roman times",20))
         self.init_com()
         self.reset_all_result()
@@ -128,6 +132,7 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow,QtWidgets.QDialog):
         self.write_sn_state=False
         self.write_mac_state=False
         self.et_snmac.setEnabled(False)
+
 
     def set_acc_result(self,r):
         if r == True:
