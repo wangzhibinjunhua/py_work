@@ -180,16 +180,12 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow,QtWidgets.QDialog):
             return
         snmac=self.et_snmac.toPlainText()
         if len(snmac) == 28:
-            if snmac.startswith('QD'):
-                self.tv_last_snamac.clear()
-                self.tv_last_snamac.setText(snmac)
-                self.et_snmac.clear()
-                self.et_snmac.setFocus(True)
-                self.write_snmac()
-            else:
-                self.et_snmac.clear()
-                self.et_snmac.setFocus(True)
-                QtWidgets.QMessageBox.critical(self, '严重错误', 'sn/mac 格式不正确')
+            self.tv_last_snamac.clear()
+            self.tv_last_snamac.setText(snmac)
+            self.et_snmac.clear()
+            self.et_snmac.setFocus(True)
+            self.write_snmac()
+
 
     def write_snmac(self):
         print('write sn mac')
