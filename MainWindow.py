@@ -175,10 +175,10 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow,QtWidgets.QDialog):
             self.btn_mac.setStyleSheet('background-color:red')
 
     def snmac_change(self):
-        #print('sn mac change')
+        print('sn mac change')
         if self.write_snmac_flag == False:
             return
-        snmac=self.et_snmac.toPlainText()
+        snmac=self.et_snmac.text()
         if len(snmac) == 28:
             self.tv_last_snamac.clear()
             self.tv_last_snamac.setText(snmac)
