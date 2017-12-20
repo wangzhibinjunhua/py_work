@@ -202,7 +202,7 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow,QtWidgets.QDialog):
         mac=snmac[26:28]+snmac[24:26]+snmac[22:24]+snmac[20:22]+snmac[18:20]+snmac[16:18]
         print('mac='+mac)
         self.mac_v=mac
-        #Timer(3, self.write_mac, (mac,)).start()
+
 
     def write_sn(self,sn):
         self.write_sn_state=True
