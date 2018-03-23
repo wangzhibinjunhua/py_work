@@ -9,7 +9,8 @@ import re
 import sys
 import time
 
-from PyQt5.QtGui import QTextCursor
+from PyQt5.QtCore import QRegExp
+from PyQt5.QtGui import QTextCursor, QRegExpValidator
 from PyQt5.QtSerialPort import QSerialPort, QSerialPortInfo
 from PyQt5 import QtCore,QtGui,QtWidgets
 from gevent.corecext import SIGNAL
@@ -45,6 +46,9 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow,QtWidgets.QDialog):
         self.tv_systime.setFont(QtGui.QFont("Roman times", 16))
         self.btn_next.setFont(QtGui.QFont("宋体", 20))
         self.et_snmac.textChanged.connect(self.snmac_change)
+        regx = QRegExp("^Q{1}D{1}[0-9A-Z]{13}/{1}[0-9A-F]{12}$")
+        validator = QRegExpValidator(regx, self.et_snmac)
+        self.et_snmac.setValidator(validator)
         self.tv_last_snamac.setFont(QtGui.QFont("Roman times",20))
         self.init_com()
         self.reset_all_result()
@@ -129,6 +133,7 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow,QtWidgets.QDialog):
         self.write_mac_state=False
         self.et_snmac.setEnabled(False)
 
+
     def set_acc_result(self,r):
         if r == True:
             self.btn_acc.setText('PASS')
@@ -170,21 +175,17 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow,QtWidgets.QDialog):
             self.btn_mac.setStyleSheet('background-color:red')
 
     def snmac_change(self):
-        #print('sn mac change')
+        print('sn mac change')
         if self.write_snmac_flag == False:
             return
-        snmac=self.et_snmac.toPlainText()
+        snmac=self.et_snmac.text()
         if len(snmac) == 28:
-            if snmac.startswith('QD'):
-                self.tv_last_snamac.clear()
-                self.tv_last_snamac.setText(snmac)
-                self.et_snmac.clear()
-                self.et_snmac.setFocus(True)
-                self.write_snmac()
-            else:
-                self.et_snmac.clear()
-                self.et_snmac.setFocus(True)
-                QtWidgets.QMessageBox.critical(self, '严重错误', 'sn/mac 格式不正确')
+            self.tv_last_snamac.clear()
+            self.tv_last_snamac.setText(snmac)
+            self.et_snmac.clear()
+            self.et_snmac.setFocus(True)
+            self.write_snmac()
+
 
     def write_snmac(self):
         print('write sn mac')
@@ -201,7 +202,7 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow,QtWidgets.QDialog):
         mac=snmac[26:28]+snmac[24:26]+snmac[22:24]+snmac[20:22]+snmac[18:20]+snmac[16:18]
         print('mac='+mac)
         self.mac_v=mac
-        #Timer(3, self.write_mac, (mac,)).start()
+
 
     def write_sn(self,sn):
         self.write_sn_state=True
