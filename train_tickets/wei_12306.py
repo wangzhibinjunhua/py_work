@@ -4,8 +4,11 @@ Author:韦玮
 ---------------
 '''
 #12306账号
-myuser="770913912@qq.com"
-mypasswd="weijc7789W"
+
+## test
+
+myuser="wangzhibin_x@foxmail.com"
+mypasswd="wangzhibinh1"
 import urllib.request
 import re
 import ssl
@@ -18,16 +21,16 @@ ssl._create_default_https_context = ssl._create_unverified_context
 #查票
 #常用三字码与站点对应关系
 areatocode={"上海":"SHH","北京":"BJP","南京":"NJH","昆山":"KSH","杭州":"HZH","桂林":"GLZ"}
-start1=input("请输入起始站:")
-#start1="北京"
+#start1=input("请输入起始站:")
+start1="北京"
 start=areatocode[start1]
-to1=input("请输入到站:")
-#to1="上海"
+#to1=input("请输入到站:")
+to1="上海"
 to=areatocode[to1]
-isstudent=input("是学生吗？是：1，不是：0")
-#isstudent="0"
-date=input("请输入要查询的乘车开始日期的年月，如2017-03-05：")
-#date="2018-04-13"
+#isstudent=input("是学生吗？是：1，不是：0")
+isstudent="0"
+#date=input("请输入要查询的乘车开始日期的年月，如2017-03-05：")
+date="2018-05-09"
 if(isstudent=="0"):
     student="ADULT"
 else:
@@ -97,7 +100,11 @@ while True:
 #x坐标(35,112,173,253)，y坐标(45)
 #x坐标(35,112,173,253)，y坐标(114)
 pat1='"(.*?)"'
-allpic=re.compile(pat1).findall(yzm)
+print("选择的图片是 %s" %yzm)
+#allpic=re.compile(pat1).findall(yzm)
+##modify by wzb
+allpic=yzm.strip(',').split(',')
+print(allpic)
 def getxy(pic):
     if(pic==1):
         xy=(35,45)
@@ -121,6 +128,10 @@ for i in allpic:
     thisxy=getxy(int(i))
     for j in thisxy:
         allpicpos=allpicpos+str(j)+","
+
+
+print("11111")
+print(allpicpos)
 allpicpos2=re.compile("(.*?).$").findall(allpicpos)[0]
 print(allpicpos2)
 #post验证码验证
@@ -439,6 +450,8 @@ L, like Gecko) Chrome/38.0.2125.122 Safari/537.36 SE 2.X MetaSr 1.0')
             req12 = urllib.request.Request(getorderidurl)
             req12.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.122 Safari/537.36 SE 2.X MetaSr 1.0')
             req12data=urllib.request.urlopen(req12).read().decode("utf-8","ignore")
+            print("#####")
+            print(req12data)
             patorderid='"orderId":"(.*?)"'
             orderidall=re.compile(patorderid).findall(req12data)
             if(len(orderidall)==0):
